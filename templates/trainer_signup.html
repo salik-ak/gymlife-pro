@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<!-- registration.html -->
+
+<head>
+    <title>Trainer Registration</title>
+    <style>
+        body {
+            background-image: url('https://wallpaper.dog/large/20480664.jpg');
+            background-size: cover;
+            background-position: flex;
+            color: rgb(58, 44, 44);
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .registration-form {
+            align-items: right;
+            max-width: 500px;
+            margin: 30px auto;
+            background-color: rgba(203, 200, 200, 0.2);
+            padding: 30px;
+            border-radius: 5px;
+        }
+
+        .registration-form input[type="text"],
+        .registration-form input[type="email"],
+        .registration-form input[type="password"],
+        .registration-form input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .registration-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .registration-form input[type="submit"] {
+            background-color: #4CAF50;
+            color: rgb(161, 121, 121);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<div class="container">
+    <div class="registration-form text-right">
+        <h2>Trainer Registration</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <input type="submit" value="Register">
+        </form>
+    </div>
+</div>
+
+{% endblock %}

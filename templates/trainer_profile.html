@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{%load static %}
+<section class="breadcrumb-section set-bg" data-setbg="{%static 'img/breadcrumb-bg.jpg'%}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>Classes detail</h2>
+                    <div class="bt-option">
+                        <a href="{% url 'home' %}">Home</a>
+                        <a href="">Trainers</a>
+                        <span>Trainer Details</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>
+<div class="cd-trainer bg-dark">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="cd-trainer-pic">
+                <img src="{%static 'img/classes/class-details/trainer-profile.jpg'%}" alt="">
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="cd-trainer-text">
+                <div class="trainer-title">
+                    <h4>gyftyhg</h4>
+                    <span>Gym Trainer</span>
+                </div>
+                <div class="trainer-social">
+                    <a href="#"><i class="fa fa-facebook"></i></a>
+                    <a href="#"><i class="fa fa-twitter"></i></a>
+                    <a href="#"><i class="fa fa-youtube-play"></i></a>
+                    <a href="#"><i class="fa fa-instagram"></i></a>
+                    <a href="#"><i class="fa  fa-envelope-o"></i></a>
+                </div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua viverra maecenas lacus
+                    vel facilisis.</p>
+                <ul class="trainer-info ">
+                    <li><h5><span>Age</span></li></h5>
+                    <li><h5><span>Weight</span>148lbs</li></h5>
+                   <li> <h5><span>Height</span>10' 2``</li></h5>
+                   <li> <h5>age</h5></li>
+                    <li> <h5>Occupation h4no-founder</h5></li>
+                </ul>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua viverra maecenas lacus
+                    vel facilisis. </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}

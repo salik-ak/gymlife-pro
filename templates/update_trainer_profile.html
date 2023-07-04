@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{%load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trainer Profile Form</title>
+</head>
+<body>
+    <h1>Trainer Profile Form</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>
+
+
+
+
+{% endblock %}
