@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
+from trainer.models import Trainer
 
 
 # Create your models here.
@@ -55,7 +56,7 @@ class CustomUser(AbstractUser):
 
 
 class Notification(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(Trainer, on_delete=models.CASCADE)
     message = models.CharField(max_length=255)
     is_read = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -69,7 +70,7 @@ class Notification(models.Model):
 @receiver(post_save, sender=User)
 def create_user_notification(sender, instance, created, **kwargs):
     if created:
-        message = f"A new user has been created with the username: {instance.username}"
+        message = f"A new trainer has been registerd with the username: {instance.username}"
         admin_user = User.objects.get(username='admin')  # Replace 'admin' with the admin username
         notification = Notification(user=admin_user, message=message)
         notification.save()

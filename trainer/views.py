@@ -8,7 +8,7 @@ from trainer.models import Trainer
 from course.models import Course
 # from .models import TrainerProfile
 # from .forms import ProfileForm
-
+from authentication.models import Notification
 
 
 #email verification
@@ -78,6 +78,11 @@ def trainer_signup(request):
                         
                     )
                     user.save()
+                    trainer = user
+                    message = f"A new trainer has been created with the username: {trainer.username}"
+                    notification = Notification(user=trainer, message=message)
+                    notification.save()
+
                     return redirect('home')
                 except Course.DoesNotExist:
                     print('Invalid specialized course ID')

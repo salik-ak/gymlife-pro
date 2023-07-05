@@ -19,15 +19,16 @@ def enrollment(request,id):
         
         trainer = Trainer.objects.get(pk=id)
         
-        purchased_course = trainer.specialized_course
+        
+        
 
     except Trainer.DoesNotExist:
         
         return redirect('courses')
     context={
         'user' :user,
-        'trainer' : trainer,
-        'purchased_course ':purchased_course
+        'trainer' : trainer
+        
         
     }
 
