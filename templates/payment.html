@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% block title %} GYM LIFE {% endblock %}
+{% block content %}
+{% load static %}
+<!-- PAGE TITLE
+        ================================================== -->
+        <section class="breadcrumb-section set-bg" data-setbg="{%static 'img/breadcrumb-bg.jpg'%}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <div class="breadcrumb-text">
+                            <h2>payment details</h2>
+                            <div class="bt-option">
+                                <a href="./index.html">Home</a>
+                                <a href="">PAYMENT</a>
+                                <span>Payment page</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+<!-- CHECKOUT
+        ================================================== -->
+<section class="md">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- <div class="process-steps mb-1-9 mb-lg-6">
+                    <a class="step" href=""><i class="ti-direction-alt"></i>
+                        <h4 class="step-title">1. Address</h4>
+                    </a>
+
+                    <a class="step active" href="shop-checkout-payment.html"><i class="ti-wallet"></i>
+                        <h4 class="step-title">2. Payment</h4>
+                    </a>
+                    <a class="step" href="shop-checkout-review.html"><i class="ti-check-box"></i>
+                        <h4 class="step-title">3. Review</h4>
+                    </a>
+                </div> -->
+            </div>
+
+            <!-- left pannel section -->
+            <div class="col-lg-9 col-md-12 ps-2-3 mb-1-9 mb-lg-0">
+                <h4 class="text-center mb-5">Review Your subscription and Make Payment</h4>
+
+            <div class="card ">
+
+                    <div class="card-body">
+
+                        <div class="card-header align-items-center text-center">
+                            PAYMENT DETAILS
+                        </div>
+                        <div class="card-body">
+
+                         
+
+                        </div>
+
+
+                        <table class="table">
+                            <thead>
+                               
+                            </thead>
+                            <tbody>
+
+
+
+
+                            </tbody>
+                        </table>
+                          
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+            <!-- end left pannel section -->
+
+            <!-- right pannel section -->
+            <div class="col-lg-3 col-12 side-bar">
+
+                <div class="widget align-items-center">
+
+                    <div class="widget-title">
+                        <h5>payment options</h5>
+                    </div>
+
+                    <table class="table classic">
+                        <tbody>
+                            <tr>
+                                <th scope="col">course details</th>
+                                <th scope="col">your course</th>
+                                <th scope="col">your trainer</th>
+                                <th scope="col">total amount</th>
+                                <td class="text-gray-dark">{{username}}</td>
+                                <td class="text-gray-dark">{{course_purchased}}</td>
+                                <td class="text-gray-dark">{{trainer}}</td>
+                                <td class="text-gray-dark">{{price_plan}}</td>
+
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+               
+            
+             
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" style="width:100%;"
+                data-bs-target="">
+                pay in counter
+            </button>
+            
+            
+
+             <!-- Modal -->
+            <div class="modal fade" id="" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">payment confirmation</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            you are choose pay in counter ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href=""><button type="button" class="btn btn-primary">Proceed</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                
+                <div id="paypal-button-container">
+                    <!-- Paypal BUtton Will Load -->
+                </div>
+
+
+
+            </div>
+            
+            <!-- end right pannel section -->
+
+        </div>
+    </div>
+</section>
+<script
+    src="https://www.paypal.com/sdk/js?client-id=Aac2ynGJVjmsp9_TJCAYUwRaidyaZCVptGRg5MclcnXKSC5yJMts2ZmYabpSyOv9xgd9VzfXHyxxwaAm&currency=USD"></script>
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var amount = "{{price_plan}}"
+    var url = "{% url 'payments' %}"
+    var csrftoken = getCookie('csrftoken');
+    var orderID = "{{client.subscription_number}}"
+    var payment_method = 'Paypal'
+    var redirect_url = ""
+
+    // wait for on load event to ensure the JS SDK is loaded
+    window.addEventListener('load', (event) => {
+        var options = {
+            createOrder: function (data, actions) {
+                // This function sets up the details of the transaction, including the amount and line item details. 
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: amount,
+                        }
+                    }]
+                });
+            },
+            onApprove: function (data, actions) {
+                // This function captures the funds from the transaction. 
+                return actions.order.capture().then(function (details) {
+                    // This function shows a transaction success message to your buyer. 
+                    console.log(details);
+
+
+                    sendData();
+                    function sendData() {
+                        fetch(url, {
+                            method: "POST",
+                            headers: {
+                                "Content-type": "application/json",
+                                "X-CSRFToken": csrftoken,
+                            },
+                            body: JSON.stringify({
+                                orderID: orderID,
+                                transID: details.id,
+                                status: details.status,
+                                payment_method: payment_method,
+                            }),
+
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+
+                                window.location.href = redirect_url + '?subscription_number=' + data.order_number + '&payment_id=' + data.transID;
+                            });
+                    }
+                })
+            }
+        };
+        // This function displays Smart Payment Buttons on your web page. 
+        window.paypal.Buttons(options).render('#paypal-button-container');
+    });
+</script>
+
+
+
+
+
+
+
+
+
+{% endblock %}

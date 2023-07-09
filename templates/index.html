@@ -96,20 +96,25 @@
                 </div>
             </div>
         </div>
+
+
         <div class="row">
+            {% if course %}
+            {% for i in course %}
             <div class="col-lg-4 col-md-6">
                 <div class="class-item">
                     <div class="ci-pic">
-                        <img src="{%static 'img/classes/class-1.jpg'%}" alt="">
+                        <img src="{{i.image.url}}" alt="">
                     </div>
                     <div class="ci-text">
                         <span>STRENGTH</span>
-                        <h5>Weightlifting</h5>
+                        <h5>{{i.course_name}}</h5>
                         <a href="#"><i class="fa fa-angle-right"></i></a>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
+            {% endfor %}
+            <!-- <div class="col-lg-4 col-md-6">
                 <div class="class-item">
                     <div class="ci-pic">
                         <img src="{%static 'img/classes/class-2.jpg'%}" alt="">
@@ -157,8 +162,9 @@
                     </div>
                 </div>
             </div>
+        </div> -->
+            {% endif %}
         </div>
-    </div>
 </section>
 <!-- ChoseUs Section End -->
 
@@ -294,62 +300,31 @@
                         <span>Our Team</span>
                         <h2>TRAIN WITH EXPERTS</h2>
                     </div>
-                    <a href="#" class="primary-btn btn-normal appoinment-btn">appointment</a>
+                    <a href="{% url 'trainer'%}" class="primary-btn btn-normal appoinment-btn">appointment</a>
                 </div>
             </div>
         </div>
+
         <div class="row">
+            {% if trainer %}
+            
             <div class="ts-slider owl-carousel">
+                {% for i in trainer %}
                 <div class="col-lg-4">
-                    <div class="ts-item set-bg" data-setbg="{%static 'img/team/team-1.jpg'%}">
+                    <div class="ts-item set-bg" data-setbg="{{ i.profile_pictures.url}}">
                         <div class="ts_text">
-                            <h4>Athart Rachel</h4>
+                            <h4>{{i.username}}</h4>
                             <span>Gym Trainer</span>
                         </div>
                     </div>
+
                 </div>
-                <div class="col-lg-4">
-                    <div class="ts-item set-bg" data-setbg="{%static 'img/team/team-2.jpg'%}">
-                        <div class="ts_text">
-                            <h4>Athart Rachel</h4>
-                            <span>Gym Trainer</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="ts-item set-bg" data-setbg="{%static 'img/team/team-3.jpg'%}">
-                        <div class="ts_text">
-                            <h4>Athart Rachel</h4>
-                            <span>Gym Trainer</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="ts-item set-bg" data-setbg="{%static 'img/team/team-4.jpg'%}">
-                        <div class="ts_text">
-                            <h4>Athart Rachel</h4>
-                            <span>Gym Trainer</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="ts-item set-bg" data-setbg="{%static 'img/team/team-5.jpg'%}">
-                        <div class="ts_text">
-                            <h4>Athart Rachel</h4>
-                            <span>Gym Trainer</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="ts-item set-bg" data-setbg="{%static 'img/team/team-6.jpg'%}">
-                        <div class="ts_text">
-                            <h4>Athart Rachel</h4>
-                            <span>Gym Trainer</span>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
+
             </div>
+            {% endif %}
         </div>
+
     </div>
 </section>
 <!-- Team Section End -->

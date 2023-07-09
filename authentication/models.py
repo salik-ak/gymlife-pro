@@ -54,6 +54,10 @@ class CustomUser(AbstractUser):
 
     objects = CustomUserManager()
 
+    def __str__(self):
+        return self.username
+    
+
 
 class Notification(models.Model):
     user = models.ForeignKey(Trainer, on_delete=models.CASCADE)

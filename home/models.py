@@ -1,5 +1,7 @@
 from django.db import models
 from authentication.models import CustomUser
+from trainer.models import Trainer
+from course.models import Course
 
 # Create your models here.
 
@@ -15,42 +17,48 @@ class Payment(models.Model):
 
     def __str__(self):
         return self.payment_id
+    
+
+class MembershipPlan(models.Model):
+    plan =models.CharField(max_length=50)
+    price = models.IntegerField()
+    def __str__(self):
+        return str(self.plan)
+
 
 class Subscription(models.Model):
     STATUS = (
         ('subscribed', 'subscribed'),
         ('Cancelled','Cancelled'),
-        ('Returned','Returned'),
+        
     )
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
-    payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, null=True)
-    subscription_number = models.CharField(max_length=20)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=15)
-    email = models.EmailField(max_length=50)
-    address_line_1 = models.CharField(max_length=50)
-    address_line_2 = models.CharField(max_length=50, blank=True)
-    pin = models.CharField(max_length=15)
-    country = models.CharField(max_length=50)
-    state = models.CharField(max_length=50)
-    city = models.CharField(max_length=50)
-    subscription_note = models.CharField(max_length=50, blank=True)
-    price_total = models.FloatField()
-    tax = models.FloatField()
+    trainer= models.ForeignKey(Trainer, on_delete=models.SET_NULL, null=True)
+    course = models.ForeignKey(Course,on_delete=models.SET_NULL, null=True)
+    gender = models.CharField(max_length=15)
+    price_total = models.ForeignKey( MembershipPlan,on_delete=models.SET_NULL, null=True)
+    age = models.CharField(max_length=50)
+    refrence = models.CharField(max_length=50, blank=True)
+    payment_status = models.CharField(max_length=30)
     status = models.CharField(max_length=50, choices=STATUS, default='subscription Confirmed')
-    ip = models.CharField(max_length=20, blank=True)
     is_subscribed = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
+    subscription_number = models.CharField(max_length=20)
+    DueDate=models.DateTimeField(blank=True,null=True)
+    timeStamp=models.DateTimeField(auto_now_add=True,blank=True,)
     
-    def full_name(self):
-         return f'{self.first_name}{self.last_name}'
-
-    def full_address(self):
-         return f'{self.address_line_1}{self.address_line_2}'
+    # def __str__(self):
+    #     return self.user
+    
+class PurchasedCourse(models.Model):
+    client=models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    
+    trainer = models.ForeignKey(Trainer,on_delete=models.CASCADE)
+    selected_plan = models.ForeignKey(MembershipPlan,on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.user.first_name
-    
+        return self.user
+
+
+class PaymentMethod(models.Model):
+    payment_method = models.CharField(max_length=50)
+

@@ -1,5 +1,5 @@
 from django.db import models
-from authentication.models import CustomUser
+
 from course.models import Course
 from django.urls import reverse
 
