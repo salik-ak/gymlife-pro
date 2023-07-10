@@ -11,10 +11,9 @@
         <div class="page-titles">
             <ol class="breadcrumb">
                 
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Courses</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Subscription</a></li>
             </ol>
         </div>
-        {% if course %}
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -22,7 +21,7 @@
                         <div class="table-responsive">
                             <table class="table table-sm mb-0 table-striped">
                                 <thead>
-                                   
+                                    {% if subscriber %}
                                     <tr>
                                         <th class=" pr-3">
                                             <div class="custom-control custom-checkbox mx-2">
@@ -30,16 +29,20 @@
                                                 <label class="custom-control-label" for="checkAll"></label>
                                             </div>
                                         </th>
-                                        <th>Course Name</th>
-                                        <th>Price</th>
-                                        <th class="pl-5 width200">description</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th class="pl-5 width200">Courses
+                                        </th>
+                                        <th>trainer</th>
                                         <th>  </th>
                                         <th>status</th>
                                     </tr>
                                 </thead>
+                                
                                 <tbody id="customers">
                                     <tr class="btn-reveal-trigger">
-                                        {% for i in course %}
+                                        {% for i in subscriber %}
                                         <td class="py-2">
                                             <div class="custom-control custom-checkbox mx-2">
                                                 <input type="checkbox" class="custom-control-input" id="checkbox1">
@@ -57,21 +60,23 @@
                                                         </div>
                                                     </div>
                                                     <div class="media-body">
-                                                        <h5 class="mb-0 fs--1">{{ i.course_name }}</h5>
+                                                        <h5 class="mb-0 fs--1">{{i.user}}</h5>
                                                     </div>
                                                 </div>
                                             </a>
                                         </td>
-                                        <td class="py-2"><a href="mailto:ricky@example.com">{{i.price}}</a></td>
-                                        <td class="py-2"> <a href="tel:2012001851"></a>{{i.description}}</td>
-                                      
+                                        <td class="py-2"><a href="mailto:ricky@example.com">{{i.user.email}}</a></td>
+                                        <td class="py-2"> <a href="tel:2012001851">{{i.user.phone}}</a></td>
+                                        <td class="py-2 pl-5 wspace-no">{{i.trainer}}</td>
+                                        <td class="py-2">{{i.gender}}</td>
                                         <td>{{i.status}}</td>
-										{% if i.is_available %}
+										{% if i.is_active %}
 										<td style="color: green;">Active</td>
 										{% else %}
 										<td style="color:red">blocked</td>
 										{% endif %}
-										{% if i.is_available %}
+										{% if i.is_active %}
+										<td>
                                         <td class="py-2 text-right">
                                             <div class="dropdown"><button class="btn btn-primary tp-btn-light sharp"
                                                     type="button" data-toggle="dropdown"><span class="fs--1"><svg
@@ -86,26 +91,24 @@
                                                                 <circle fill="#000000" cx="19" cy="12" r="2"></circle>
                                                             </g>
                                                         </svg></span></button>
-                                                        <div class="dropdown-menu dropdown-menu-right border py-0">
-                                                            <div class="py-2"><a class="dropdown-item" href="{% url 'block_course' i.id %}">block</a><a
-                                                                    class="dropdown-item text-danger" href="{% url 'delete_course' i.id %}">Delete</a>
-                                                                    <a
-                                                                    class="dropdown-item text-danger" href="{% url 'update_course' i.id %}">Edit</a></div>
-                                                        </div>
-                                                        
-                                                        {% else %}
-                                                        <td> <a href="{% url 'block_course' i.id %}"
-                                                            class="btn btn-success btn-sm">Unblock</a>
-                                                    </td>
-                                                    {% endif %}
-                                              
+                                                <div class="dropdown-menu dropdown-menu-right border py-0">
+                                                    <div class="py-2"><a class="dropdown-item" href="{% url 'block_subscription' i.id%}">block</a><a
+                                                            class="dropdown-item text-danger" href="{% url 'delete_subscription' i.id%}">Delete</a></div>
+                                                </div>
                                             </div>
                                         </td>
-                                      
-										
+                                        {% else %}
+										<td> <a href="{% url 'block_subscription' i.id %}"
+												class="btn btn-success btn-sm">Unblock</a>
+										</td>
+										{% endif %}
                                     </tr>{% endfor %}
-                                  
+                                    {% else %}
+                                     <div class="media-body">
+                                                        <h5 class="mb-0 fs--1">there are no such subsriber</h5>
+                                                    </div>
                                     {% endif %}
+                                   
                                 </tbody>
                             </table>
                         </div>

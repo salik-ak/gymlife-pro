@@ -64,8 +64,21 @@
                                
                             </thead>
                             <tbody>
+                                <th scope="col">subscription</th>
+                                <th scope="col">your details</th>
+                                <th scope="col">your course</th>
+                                <th scope="col">your trainer</th>
+                                <th scope="col">total amount</th>
 
-
+                                <tr>
+                                    <td class="text-gray-dark">{{subscription_number}}</td>
+                                    <td class="text-gray-dark">{{username}}</td>
+                                    <td class="text-gray-dark">{{trainer.specialized_course}}</td>
+                                    <td class="text-gray-dark">{{trainer.username}}</td>
+                                    <td class="text-gray-dark">{{price_plan}}</td>
+    
+    
+                                </tr>
 
 
                             </tbody>
@@ -92,18 +105,7 @@
 
                     <table class="table classic">
                         <tbody>
-                            <tr>
-                                <th scope="col">course details</th>
-                                <th scope="col">your course</th>
-                                <th scope="col">your trainer</th>
-                                <th scope="col">total amount</th>
-                                <td class="text-gray-dark">{{username}}</td>
-                                <td class="text-gray-dark">{{course_purchased}}</td>
-                                <td class="text-gray-dark">{{trainer}}</td>
-                                <td class="text-gray-dark">{{price_plan}}</td>
-
-
-                            </tr>
+                         
                         </tbody>
                     </table>
 
@@ -172,9 +174,9 @@
     var amount = "{{price_plan}}"
     var url = "{% url 'payments' %}"
     var csrftoken = getCookie('csrftoken');
-    var orderID = "{{client.subscription_number}}"
+    var orderID = "{{subscription_number}}"
     var payment_method = 'Paypal'
-    var redirect_url = ""
+    var redirect_url = "{% url 'order_complete' %}"
 
     // wait for on load event to ensure the JS SDK is loaded
     window.addEventListener('load', (event) => {

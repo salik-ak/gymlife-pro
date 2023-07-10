@@ -5,16 +5,15 @@ from course.models import Course
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ['course_name', 'slug', 'price', 'image', 'description','duration']
+        fields = ['course_name', 'slug', 'price', 'image', 'description', 'duration']
         labels = {
-
-            'course_name': 'course_name',
-            'slug': 'slug',
-            'price': 'price',
-            'image': 'image',
-            'description': 'description',
-            'duration'  : 'duration'
+            'course_name': 'Course Name',
+            'slug': 'Slug',
+            'price': 'Price',
+            'image': 'Image',
+            'description': 'Description',
+            'duration': 'Duration'
         }
-
-class DateInput(forms.DateInput):
-    input_type = 'date'
+        widgets = {
+            'duration': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'})
+        }

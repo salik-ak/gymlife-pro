@@ -7,6 +7,7 @@ from adminpanel.forms import CourseForm
 from course.models import Course
 from trainer.models import Trainer
 from authentication.models import Notification
+from home.models import Subscription
 
 # Create your views here.
 def adminlogin(request):
@@ -71,6 +72,32 @@ def admincourse(request):
     }
     return render(request, 'admin_course_list.html', context)
 
+def subscription_list(request):
+
+    subscriber= Subscription.objects.all()
+    context ={
+        'subscriber':subscriber
+    }
+
+    return render(request,'subscription_list.html',context)
+
+def block_subscription(request,id):
+    subs = Subscription.objects.get(id=id)
+    if subs.is_active:
+        subs.is_active = False
+        subs.save()
+        messages.success(request,'course successfully blocked')
+    else:
+        subs.is_active = True
+        subs.save()
+        messages.success(request,'course successfully unblocked')
+    return redirect('subscription_list')
+
+def delete_subscription(request,id):
+    sub = Subscription.objects.get(id=id)
+    sub.delete()
+    return redirect('subscription_list')
+
 def admin_add_course(request):
     if request.method == 'POST':
         form = CourseForm(request.POST, request.FILES)
@@ -85,6 +112,26 @@ def admin_add_course(request):
             'form': form
         }
     return render(request, 'admin_add_course.html', context)
+
+
+def update_course(request,id):
+
+    if request.method == 'POST':
+        update = Course.objects.get(pk=id)
+        form = CourseForm(request.POST,request.FILES,instance=update)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_course_list')
+        else:
+            return redirect('update_course',id)
+    else:
+        update = Course.objects.get(pk=id)
+        form = CourseForm(instance=update)
+        context = {
+            'form':form
+        }
+    return render(request,'add_course.html',context)
+
 
 def block_course(request,id):
     course = Course.objects.get(id=id)

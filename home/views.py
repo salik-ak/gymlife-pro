@@ -8,6 +8,7 @@ from django.http import JsonResponse
 import json
 from .models import PurchasedCourse
 from authentication.models import CustomUser
+from django.db.models import Q
 # Create your views here.
 def index(request):
     trainer= Trainer.objects.all()
@@ -44,18 +45,27 @@ def enrollment(request,id):
 
 @login_required(login_url='user_login')
 def enrolled(request):
+    user1=request.user
     
+   
     if request.method == "POST":
-        course = Course.objects.get(id=course_purchased.id)
+
+        
+        
+        trainer = request.POST.get('trainer')
+        trainer1=Trainer.objects.get(pk=trainer)
+       
+        
+        
+        course = request.POST.get('course')
+        # selected_course =Trainer.objects.get(id=course)
         member = request.POST.get('member')
         price_plan = MembershipPlan.objects.get(id=member)
         gender = request.POST.get('gender')
-        print(gender)
         reference = request.POST.get('reference')
-        print(reference)
         data = Subscription(
-            user=user,
-            trainer=trainer,
+            user=user1,
+            trainer=trainer1,
             course=course,
             gender=gender,
             price_total=price_plan,
@@ -74,10 +84,11 @@ def enrolled(request):
         data.subscription_number = subscription_number
         data.save()
         context={
-            'username' :user2.username,
-            'course_purchased':course_purchased,
-            'trainer':trainer,
-            'price_plan':price_plan.price
+            'username' :user1.username,
+            'course_purchased': course,
+            'trainer':trainer1,
+            'price_plan':price_plan.price,
+            'subscription_number': subscription_number
 
         }
         
@@ -119,6 +130,142 @@ def payments(request):
         'transID': payment.payment_id,
     }
     return JsonResponse(data)
+
+def workout_plan(request):
+
+    return render (request,'workoutplan.html')
+
+def search(request):
+    
+    course = None
+       
+    if 'keyword' in request.GET:
+        keyword = request.GET['keyword']
+        
+        print(keyword)
+        if keyword:
+            course = Course.objects.filter(
+                Q(description__icontains=keyword) | Q(course_name__icontains=keyword))
+        else:
+           return redirect('course')
+    
+    print(course)
+            
+    context = {
+        'course': course
+    }
+    return render(request,'course.html',context)
+
+
+
+
+
+def order_complete(request):
+    subscription_number = request.GET.get('subscription_number')
+    transID = request.GET.get('payment_id')
+    try:
+        subscription = Subscription.objects.get(subscription_number=subscription_number)
+        total = subscription.price_total
+
+        
+        grand_total = total
+        payment = Payment.objects.get(payment_id=transID)
+
+        context = {
+            'subscription_number': subscription_number,
+            'transID': payment.payment_id,
+            'payment': payment,
+            'grand_total': grand_total
+
+        }
+
+        return render(request, 'order_complete.html', context)
+    except Exception as e:
+        print(e)
+        return redirect('home')
+
+
+
+# def cash_on_delivery(request, id):
+#     # Move cart item to ordered product table
+#     try:
+
+#         order = Subscription.objects.get(user=request.user, is_ordered=False, order_number=id)
+      
+        
+#         payment = Payment(
+#             user=request.user,
+#             payment_id=order.order_number,
+#             order_id=order.order_number,
+#             payment_method='Cash on Delivery',
+#             amount_paid=order.order_total,
+#             status='False'
+#         )
+#         payment.save()
+#         order.payment = payment
+#         order.is_ordered = True
+#         order.save()
+        
+#         for cart_item in cart_items:
+#             order_product = OrderProduct()
+#             order_product.order_id = order.id
+#             order_product.payment = payment
+#             order_product.user_id = request.user.id
+#             order_product.product_id = cart_item.product_id
+#             order_product.quantity = cart_item.quantity
+#             order_product.product_price = cart_item.product.price
+#             order_product.ordered = True
+#             order_product.save()
+
+#             cart_item = CartItem.objects.get(id=cart_item.id)
+#             product_variation = cart_item.variations.all()
+            
+#             order_product = OrderProduct.objects.get(id=order_product.id)
+
+#             order_product.variations.set(product_variation)
+
+#             order_product.save()
+
+#             # Reduce quantity of product
+#             product = Product.objects.get(id=cart_item.product_id)
+#             product.stock -= cart_item.quantity
+#             product.save()
+
+#             # # Reduce quantity of variation
+
+#             print(cart_item.id)
+#             print(type(cart_item.variations))
+#             print(cart_item.variations.all())
+#             test = cart_item.variations.all()[0]
+#             print(test)
+#             variation = Variations.objects.filter(
+#                 id__in=cart_item.variations.all())
+#             for var in variation:
+#                 var.stock -= cart_item.quantity
+#                 var.save()
+
+#             # clear cart
+            
+#         CartItem.objects.filter(user=request.user).delete()
+
+#         ordered_products = OrderProduct.objects.filter(order_id=order.id)
+#         context = {
+#             'order': order,
+#             'ordered_products': ordered_products,
+#             'payment': payment,
+#             'total': total,
+#             'tax': tax,
+#             'shipping': shipping,
+
+
+#         }
+        
+#         return render(request, 'cod_success.html', context)
+    
+#     except Exception as e:
+#         return redirect('home')
+
+
 
 def user_profile(request):
     # try:

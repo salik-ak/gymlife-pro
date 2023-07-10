@@ -111,7 +111,7 @@
         
                                     <li><a href="{% url 'gallery' %}">Gallery</a></li>
                                     <li><a href="./blog.html">Our blog</a></li>
-                                    <li><a href="./404.html">404</a></li>
+                                    <li><a href="{% url 'workout_plan' %}">Weekly wourkout plan</a></li>
                                 </ul>
                             </li>
                             {% if user.is_authenticated %}
@@ -236,12 +236,17 @@
     <!-- Search model Begin -->
     <div class="search-model">
         <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
-            </form>
+            <div class="header-search">
+                <form class="ec-btn-group-form" action="{% url 'search' %}" method="GET">
+                    <input class="form-control ec-search-bar" placeholder="Search products..." name="keyword"
+                        type="text">
+                    <button class="submit" type="submit"><img
+                            src="" class="svg_img header_svg"
+                            alt="" /></button>
+                </form>
+            </div>
         </div>
-    </div>
+      </div>
     <!-- Search model end -->
 
     <!-- Js Plugins -->

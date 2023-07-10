@@ -9,8 +9,8 @@ def course(request):
     course = Course.objects.filter(is_available = True).order_by('-id')
     trainer = Trainer.objects.all() 
     context ={
-        'course': course,
-        'trainer': trainer
+        'course': course
+        
     }
     return render(request,'course.html',context)
 

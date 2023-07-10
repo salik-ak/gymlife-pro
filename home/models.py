@@ -32,11 +32,11 @@ class Subscription(models.Model):
         ('Cancelled','Cancelled'),
         
     )
-    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
-    trainer= models.ForeignKey(Trainer, on_delete=models.SET_NULL, null=True)
-    course = models.ForeignKey(Course,on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
+    trainer= models.ForeignKey(Trainer, on_delete=models.CASCADE, null=True)
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True)
     gender = models.CharField(max_length=15)
-    price_total = models.ForeignKey( MembershipPlan,on_delete=models.SET_NULL, null=True)
+    price_total = models.ForeignKey( MembershipPlan,on_delete=models.CASCADE, null=True)
     age = models.CharField(max_length=50)
     refrence = models.CharField(max_length=50, blank=True)
     payment_status = models.CharField(max_length=30)
@@ -45,9 +45,10 @@ class Subscription(models.Model):
     subscription_number = models.CharField(max_length=20)
     DueDate=models.DateTimeField(blank=True,null=True)
     timeStamp=models.DateTimeField(auto_now_add=True,blank=True,)
+    is_active =  models.BooleanField(default=True)
     
-    # def __str__(self):
-    #     return self.user
+    def __str__(self):
+        return self.user
     
 class PurchasedCourse(models.Model):
     client=models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -56,7 +57,7 @@ class PurchasedCourse(models.Model):
     selected_plan = models.ForeignKey(MembershipPlan,on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.user
+        return self.client
 
 
 class PaymentMethod(models.Model):
