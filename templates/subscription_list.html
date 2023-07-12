@@ -67,8 +67,8 @@
                                         </td>
                                         <td class="py-2"><a href="mailto:ricky@example.com">{{i.user.email}}</a></td>
                                         <td class="py-2"> <a href="tel:2012001851">{{i.user.phone}}</a></td>
-                                        <td class="py-2 pl-5 wspace-no">{{i.trainer}}</td>
-                                        <td class="py-2">{{i.gender}}</td>
+                                        <td class="py-2 pl-5 wspace-no">{{i.trainer.specialized_course}}</td>
+                                        <td class="py-2">{{i.trainer}}</td>
                                         <td>{{i.status}}</td>
 										{% if i.is_active %}
 										<td style="color: green;">Active</td>

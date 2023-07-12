@@ -21,16 +21,16 @@
 </section>
 <div class="cd-trainer bg-dark">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="cd-trainer-pic">
-                <img src="{%static 'img/classes/class-details/trainer-profile.jpg'%}" alt="">
+                <img src="{{ profile.profile_picture.url}}" alt="">
             </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-3 text-center" >
             <div class="cd-trainer-text">
                 <div class="trainer-title">
-                    <h4>gyftyhg</h4>
+                    <h3>{{user}}</h3>
                     <span>Gym Trainer</span>
                 </div>
                 <div class="trainer-social">
@@ -44,18 +44,18 @@
                     tempor incididunt ut labore et dolore magna aliqua viverra maecenas lacus
                     vel facilisis.</p>
                 <ul class="trainer-info ">
-                    <li><h5><span>Age</span></li></h5>
-                    <li><h5><span>Weight</span>148lbs</li></h5>
-                   <li> <h5><span>Height</span>10' 2``</li></h5>
-                   <li> <h5>age</h5></li>
-                    <li> <h5>Occupation h4no-founder</h5></li>
+                    <li><h4><span>Full name -</span> {{profile.full_name}}</li></h4>
+                    <li><h4><span>Age -</span>{{profile.age}}</li></h4>
+                    
+                   <li> <h4><span>Height -</span>{{profile.height}}</li></h4>
+                   <li><h4><span>Weight -</span>{{profile.weight}}</li></h4>
+                   <li><h4><span>Address -</span>{{profile.address}}</li></h4>
+                    
                 </ul>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua viverra maecenas lacus
-                    vel facilisis. </p>
+               
             </div>
-
-        </div>
+            <h4><a href="{% url 'create_user_profile' %}">Update profile</a></h4>
+        </div>  
     </div>
 </div>
 

@@ -9,6 +9,8 @@ import json
 from .models import PurchasedCourse
 from authentication.models import CustomUser
 from django.db.models import Q
+from .forms import UserProfileForm
+from .models import userProfile
 # Create your views here.
 def index(request):
     trainer= Trainer.objects.all()
@@ -158,8 +160,6 @@ def search(request):
 
 
 
-
-
 def order_complete(request):
     subscription_number = request.GET.get('subscription_number')
     transID = request.GET.get('payment_id')
@@ -186,98 +186,77 @@ def order_complete(request):
 
 
 
-# def cash_on_delivery(request, id):
-#     # Move cart item to ordered product table
-#     try:
-
-#         order = Subscription.objects.get(user=request.user, is_ordered=False, order_number=id)
-      
-        
-#         payment = Payment(
-#             user=request.user,
-#             payment_id=order.order_number,
-#             order_id=order.order_number,
-#             payment_method='Cash on Delivery',
-#             amount_paid=order.order_total,
-#             status='False'
-#         )
-#         payment.save()
-#         order.payment = payment
-#         order.is_ordered = True
-#         order.save()
-        
-#         for cart_item in cart_items:
-#             order_product = OrderProduct()
-#             order_product.order_id = order.id
-#             order_product.payment = payment
-#             order_product.user_id = request.user.id
-#             order_product.product_id = cart_item.product_id
-#             order_product.quantity = cart_item.quantity
-#             order_product.product_price = cart_item.product.price
-#             order_product.ordered = True
-#             order_product.save()
-
-#             cart_item = CartItem.objects.get(id=cart_item.id)
-#             product_variation = cart_item.variations.all()
-            
-#             order_product = OrderProduct.objects.get(id=order_product.id)
-
-#             order_product.variations.set(product_variation)
-
-#             order_product.save()
-
-#             # Reduce quantity of product
-#             product = Product.objects.get(id=cart_item.product_id)
-#             product.stock -= cart_item.quantity
-#             product.save()
-
-#             # # Reduce quantity of variation
-
-#             print(cart_item.id)
-#             print(type(cart_item.variations))
-#             print(cart_item.variations.all())
-#             test = cart_item.variations.all()[0]
-#             print(test)
-#             variation = Variations.objects.filter(
-#                 id__in=cart_item.variations.all())
-#             for var in variation:
-#                 var.stock -= cart_item.quantity
-#                 var.save()
-
-#             # clear cart
-            
-#         CartItem.objects.filter(user=request.user).delete()
-
-#         ordered_products = OrderProduct.objects.filter(order_id=order.id)
-#         context = {
-#             'order': order,
-#             'ordered_products': ordered_products,
-#             'payment': payment,
-#             'total': total,
-#             'tax': tax,
-#             'shipping': shipping,
-
-
-#         }
-        
-#         return render(request, 'cod_success.html', context)
+def cash_on_delivery(request, id):
+    user1=request.user
     
-#     except Exception as e:
-#         return redirect('home')
+        
+    subs = Subscription.objects.get( subscription_number =id)
+    price=subs.price_total.price
+    
+    # print(subs.subscription_number)
+    # print(user1)
+    # payment = Payment.objects.create(
+    #     user=user1,
+    #     payment_id='12234',
+    #     order_id=subs.subscription_number,
+    #     payment_method='Pay in counter',
+    #     amount_paid=price,
+    #     status='False'
+    # )
+    # print('hai')
+    # payment.save()
+    # subs.payment = payment
+    # subs.is_subscribed = True
+    # subs.save()
+    
+    
+
+    subscriber = Subscription.objects.filter(subscription_number=id)
+    context = {
+        'user':user1,
+        'subscription_number': subs.subscription_number,
+        'price' : price
+        
 
 
+    }
+    
+    return render(request, 'COD_success.html',context)
+    
+    
 
+
+@login_required(login_url='user_login')
 def user_profile(request):
-    # try:
-    #     trainer_profile = TrainerProfile.objects.select_related('user').get(user__username=username)
-    # except TrainerProfile.DoesNotExist:
-    #     # Handle the case when the trainer profile doesn't exist
-    #     trainer_profile = None
+    user = request.user
+    try:
+        profile = userProfile.objects.get(user=user)
+    except userProfile.DoesNotExist:
+        # Handle the case where the userProfile does not exist
+        profile = None
+    
+    context = {
+        'user': user,
+        'profile': profile
+    }   
+    
+    return render(request, 'user_profile.html', context)
 
-    # context = {
-    #     'trainer_profile': trainer_profile
-    # }
-    return render(request, 'user_profile.html')
+def create_user_profile(request):
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            user_profile = form.save(commit=False)
+            user_profile.user = request.user
+            user_profile.save()
+            return redirect('user_profile')
+    else:
+        form = UserProfileForm()
+    
+    return render(request, 'create_user_profile.html', {'form': form})
+
+
+
 
 def gallery(request):
 

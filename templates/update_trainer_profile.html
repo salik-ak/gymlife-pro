@@ -2,8 +2,23 @@
 
 {% block content %}
 {%load static %}
-<!DOCTYPE html>
-<html>
+<section class="breadcrumb-section set-bg" data-setbg="{%static 'img/breadcrumb-bg.jpg'%}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>Update profile</h2>
+                    <div class="bt-option">
+                        <a href="{% url 'home' %}">Home</a>
+                        <a href="">Trainers</a>
+                        <span>Trainer Details</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>
 <head>
     <title>Trainer Profile Form</title>
 </head>
