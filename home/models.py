@@ -76,4 +76,31 @@ class userProfile(models.Model):
         return self.full_name
 
 
+from django.db import models
+
+class Exercise(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+class WorkoutPlan(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    exercises = models.ManyToManyField(Exercise, through='WorkoutPlanExercise')
+
+    def __str__(self):
+        return self.name
+
+class WorkoutPlanExercise(models.Model):
+    workout_plan = models.ForeignKey(WorkoutPlan, on_delete=models.CASCADE)
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    sets = models.PositiveIntegerField()
+    repetitions = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f'{self.workout_plan.name} - {self.exercise.name}'
+
+
 

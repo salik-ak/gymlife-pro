@@ -75,7 +75,7 @@
                                     <td class="text-gray-dark">{{username}}</td>
                                     <td class="text-gray-dark">{{trainer.specialized_course}}</td>
                                     <td class="text-gray-dark">{{trainer.username}}</td>
-                                    <td class="text-gray-dark">{{price_plan}}</td>
+                                    <td class="text-gray-dark">{{price_plan}} </td>
     
     
                                 </tr>
@@ -170,6 +170,7 @@
         return cookieValue;
     }
     var amount = "{{price_plan}}"
+    var plan = "{{price_plan_id}}"
     var url = "{% url 'payments' %}"
     var csrftoken = getCookie('csrftoken');
     var orderID = "{{subscription_number}}"
@@ -197,8 +198,8 @@
 
 
                     sendData();
-                    function sendData() {
-                        fetch(url, {
+                   function sendData() {
+                         fetch(url, {
                             method: "POST",
                             headers: {
                                 "Content-type": "application/json",
@@ -209,6 +210,7 @@
                                 transID: details.id,
                                 status: details.status,
                                 payment_method: payment_method,
+                                price_total:amount,
                             }),
 
                         })

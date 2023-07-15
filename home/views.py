@@ -90,7 +90,8 @@ def enrolled(request):
             'course_purchased': course,
             'trainer':trainer1,
             'price_plan':price_plan.price,
-            'subscription_number': subscription_number
+            'subscription_number': subscription_number,
+            'price_plan_id':price_plan.id
 
         }
         
@@ -100,37 +101,43 @@ def enrolled(request):
 
 def payments(request):
     body = json.loads(request.body)
+    print(body)
+    print('hai')
+    # client = Subscription.objects.get(
+    #         user=request.user,
+    #         is_subscribed=False   )
     
-    try:
-        client = Subscription.objects.get(
-            user=request.user,
-            is_subscribed=False,
-            subscription_number=body['orderID'],
-            price_total=None
-        )
-    except Subscription.DoesNotExist:
-        return JsonResponse({'message': 'Subscription not found.'}, status=404)
-
+    # try:        
+    #               
+            
+    #    
+    #     print(client)
+    # except Subscription.DoesNotExist:
+    #     return JsonResponse({'message': 'Subscription not found.'}, status=404)
+    # print(client)
     payment = Payment(
         user=request.user,
         payment_id=body['transID'],
-        order_id=client.subscription_number,
+        order_id=body['orderID'],
         payment_method=body['payment_method'],
-        amount_paid=client.price_total,
-        status='True'
+        amount_paid=body['price_total'],
+        status=body['status']
     )
     payment.save()
 
+    
+
     # Update the subscription with the payment details
-    client.payment = payment
-    client.is_subscribed = True
-    client.save()
+    # client.payment = payment
+    # client.is_subscribed = True
+    # client.save()
 
     # Send the response back to the client
     data = {
-        'order_number': client.subscription_number,
-        'transID': payment.payment_id,
+        'order_number': payment.order_id,
+        'transID': payment.payment_id
     }
+    print(data)
     return JsonResponse(data)
 
 def workout_plan(request):
@@ -176,7 +183,6 @@ def order_complete(request):
             'transID': payment.payment_id,
             'payment': payment,
             'grand_total': grand_total
-
         }
 
         return render(request, 'order_complete.html', context)
