@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from course.models import Course
 from trainer.models import Trainer
+from home.models import WorkoutPlan
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -21,7 +22,8 @@ def course_details(request, id):
     try:
 
         single_course = Course.objects.get(pk=id)
-        trainer =Trainer.objects.filter(specialized_course=single_course) 
+        trainer =Trainer.objects.filter(specialized_course=single_course)
+        workout_plan= WorkoutPlan.objects.all()
        
     except ObjectDoesNotExist:
         # Handle the case when the requested Course or Trainer does not exist
@@ -30,7 +32,8 @@ def course_details(request, id):
 
     context = {
         'single_course': single_course,
-        'trainer': trainer
+        'trainer': trainer,
+        'workout_plan':workout_plan
     }
 
     return render(request, 'course_details.html', context)

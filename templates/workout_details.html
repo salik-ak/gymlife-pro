@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{%load static %}
+<section class="breadcrumb-section set-bg" data-setbg="{%static 'img/breadcrumb-bg.jpg'%}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb-text">
+                    <h2>
+                       Workout plan
+                    </h2>
+                    <div class="bt-option">
+                        <a href="./index.html">Home</a>
+                        
+                        <span>workout plan</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- About US Section Begin -->
+<section class="aboutus-section">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6 p-0">
+            <div class="about-video set-bg" data-setbg="{%static 'img/about-us.jpg'%}">
+                <a href="https://www.youtube.com/watch?v=EzKkl64rRbM" class="play-btn video-popup"><i
+                        class="fa fa-caret-right"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-6 p-0">
+            <div class="about-text">
+                <div class="section-title">
+                    <span>{{ workout_plan.name }}</span>
+                    <h2></h2>
+                   
+                </div>
+                
+                <div class="text-white">
+                    
+                    <h4 class="text-white">{{ workout_plan.description }}</h4>
+                </div>
+                <ul>
+                    {% for exercise in workout_exercises %}
+                    <li>
+                        <l><h4 class="text-warning">{{ exercise.exercise.name }}</h4></l>
+                        <p>{{ exercise.exercise.description }}</p>
+                        <p>Sets: {{ exercise.sets }}</p>
+                        
+                        <p>Repetitions: {{ exercise.repetitions }}</p>
+                    </li>
+                    
+                </ul>
+                <div class="about-bar">
+                    <div class="ab-item">
+                        
+                        <!-- <div id="bar1" class="barfiller">
+                            <span class="fill" data-percentage="80"></span>
+                            <div class="tipWrap">
+                                <span class="tip"></span>
+                            </div>
+                        </div> -->
+                    </div>
+                    {% endfor %}
+                    <!-- <div class="ab-item">
+                        <p>Training</p>
+                        <div id="bar2" class="barfiller">
+                            <span class="fill" data-percentage="85"></span>
+                            <div class="tipWrap">
+                                <span class="tip"></span>
+                            </div>
+                        </div> -->
+                    </div>
+                    <!-- <div class="ab-item">
+                        <p>Fitness</p>
+                        <div id="bar3" class="barfiller">
+                            <span class="fill" data-percentage="75"></span>
+                            <div class="tipWrap">
+                                <span class="tip"></span>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+{% endblock %}

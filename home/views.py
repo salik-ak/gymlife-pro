@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth.decorators import login_required
 from course.models import Course
 from trainer.models import Trainer
@@ -11,6 +11,7 @@ from authentication.models import CustomUser
 from django.db.models import Q
 from .forms import UserProfileForm
 from .models import userProfile
+from .models import WorkoutPlan,WorkoutPlanExercise
 # Create your views here.
 def index(request):
     trainer= Trainer.objects.all()
@@ -140,9 +141,7 @@ def payments(request):
     print(data)
     return JsonResponse(data)
 
-def workout_plan(request):
 
-    return render (request,'workoutplan.html')
 
 def search(request):
     
@@ -189,6 +188,60 @@ def order_complete(request):
     except Exception as e:
         print(e)
         return redirect('home')
+    
+
+
+
+
+
+def workout_plan_list(request):
+    # Get all workout plans from the database
+    workout_plans = WorkoutPlan.objects.all()
+
+
+
+    # Pass the workout plans to the template
+    context = {
+        'workout_plans': workout_plans
+    }
+
+    # Render the template with the workout plans data
+    return render(request, 'workout_plan_list.html', context)
+
+def workout_plan(request):
+    # Get all workout plans from the database
+    workout_plans = WorkoutPlan.objects.all()
+    course = Course.objects.all()
+
+
+
+    # Pass the workout plans to the template
+    context = {
+        'workout_plans': workout_plans,
+        'course': course
+    }
+    print(workout_plans)
+    # Render the template with the workout plans data
+
+    return render (request,'workoutplan.html',context)
+
+
+def workout_plan_detail(request, id):
+    # Get the workout plan using the provided ID or return a 404 if not found
+    workout_plan = get_object_or_404(WorkoutPlan, id=id)
+
+    # Get all exercises associated with the workout plan along with their sets and repetitions
+    workout_exercises = workout_plan.workoutplanexercise_set.all()
+
+    # Pass the workout plan and its exercises to the template
+    context = {
+        'workout_plan': workout_plan,
+        'workout_exercises': workout_exercises
+    }
+
+    # Render the template with the workout plan data
+    return render(request, 'workout_details.html', context)
+
 
 
 
@@ -234,12 +287,15 @@ def cash_on_delivery(request, id):
 
 @login_required(login_url='user_login')
 def user_profile(request):
-    user = request.user
+    user=request.user
+    print(user)
     try:
         profile = userProfile.objects.get(user=user)
     except userProfile.DoesNotExist:
         # Handle the case where the userProfile does not exist
         profile = None
+
+    
     
     context = {
         'user': user,
@@ -248,18 +304,47 @@ def user_profile(request):
     
     return render(request, 'user_profile.html', context)
 
+@login_required(login_url='user_login')
 def create_user_profile(request):
+    user = request.user
+    try:
+        userprofile = userProfile.objects.get(user=user)
+    except userProfile.DoesNotExist:
+        # If the UserProfile does not exist, create a new instance
+        userprofile = userProfile(user=user)
+        print(userprofile)
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            user_profile = form.save(commit=False)
-            user_profile.user = request.user
-            user_profile.save()
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
+        if profile_form.is_valid():
+            profile_form.save()
             return redirect('user_profile')
+        else:
+            # Handle the case where form validation fails
+            # You can add appropriate error messages or other handling here
+            return render(request, 'create_user_profile.html', context={'profile_form': profile_form})
+
     else:
-        form = UserProfileForm()
+        profile_form = UserProfileForm(instance=userprofile)
     
-    return render(request, 'create_user_profile.html', {'form': form})
+    context = {
+        'profile_form': profile_form,
+        'userprofile': userprofile,
+    }
+    return render(request, 'create_user_profile.html', context)
+
+
+# def create_user_profile(request):
+#     if request.method == 'POST':
+#         form = UserProfileForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             user_profile = form.save(commit=False)
+#             user_profile.user = request.user
+#             user_profile.save()
+#             return redirect('user_profile')
+#     else:
+#         form = UserProfileForm()
+    
+#     return render(request, 'create_user_profile.html', {'form': form})
 
 
 

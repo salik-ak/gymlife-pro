@@ -14,7 +14,8 @@ urlpatterns = [
     path('workout_plan/',views.workout_plan, name='workout_plan'),
     path('search/',views.search, name='search'),
     path('cash_on_delivery/<int:id>/',views.cash_on_delivery, name='cash_on_delivery'),
-     path('create-profile/',views.create_user_profile, name='create_user_profile'),
+    path('create-profile/',views.create_user_profile, name='create_user_profile'),
+    path('workout_plan_detail/<int:id>/',views.workout_plan_detail, name='workout_plan_detail'),
     
 
     

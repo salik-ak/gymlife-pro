@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from authentication.models import CustomUser
 from trainer.models import Trainer
 from course.models import Course
@@ -73,10 +74,10 @@ class userProfile(models.Model):
     address = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.full_name
+        return self.user
 
 
-from django.db import models
+
 
 class Exercise(models.Model):
     name = models.CharField(max_length=100)
@@ -93,6 +94,9 @@ class WorkoutPlan(models.Model):
     def __str__(self):
         return self.name
 
+    def get_url(self):
+        return reverse('workout_plan_detail',args=[self.id])
+    
 class WorkoutPlanExercise(models.Model):
     workout_plan = models.ForeignKey(WorkoutPlan, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)

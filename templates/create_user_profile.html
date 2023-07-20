@@ -19,62 +19,50 @@
     </div>
     
 </section>
-<style>
-    .custom-form {
-        background-color: #343a40;
-        color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-    }
-
-    .custom-form .form-group label {
-        font-size: 18px;
-    }
-
-    .custom-form .form-group input,
-    .custom-form .form-group select {
-        font-size: 16px;
-    }
-
-    .custom-form button[type="submit"] {
-        font-size: 18px;
-    }
-</style>
-
-<div class="container">
+<!-- <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form method="post" enctype="multipart/form-data" class="p-3 custom-form">
+            <form method="post" enctype="multipart/form-data" class="p-3 bg-dark text-white">
                 {% csrf_token %}
-                <div class="form-group">
-                    {{ form.full_name.label_tag }}
-                    {{ form.full_name }}
+                <div class="mb-3">
+                    {{ profile_form.full_name.label_tag }}
+                    {{ userprofile.full_name }}
                 </div>
-                <div class="form-group">
-                    {{ form.age.label_tag }}
-                    {{ form.age }}
+                <div class="mb-3">
+                    {{ profile_form.age.label_tag }}
+                    {{ userprofile.age }}
                 </div>
-                <div class="form-group">
-                    {{ form.profile_picture.label_tag }}
-                    {{ form.profile_picture }}
+                <div class="mb-3">
+                    {{ profile_form.profile_picture.label_tag }}
+                    {{ userprofile.profile_picture }}
                 </div>
-                <div class="form-group">
-                    {{ form.height.label_tag }}
-                    {{ form.height }}
+                <div class="mb-3">
+                    {{ profile_form.height.label_tag }}
+                    {{ userprofile.height }}
                 </div>
-                <div class="form-group">
-                    {{ form.weight.label_tag }}
-                    {{ form.weight }}
+                <div class="mb-3">
+                    {{ profile_form.weight.label_tag }}
+                    {{ userprofile.weight }}
                 </div>
-                <div class="form-group">
-                    {{ form.address.label_tag }}
-                    {{ form.address }}
+                <div class="mb-3">
+                    {{ profile_form.address.label_tag }}
+                    {{ userprofile.address }}
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </div>
+</div> -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="post" enctype="multipart/form-data" class="p-3 bg-dark text-white">
+                {% csrf_token %}
+                {{ profile_form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
 </div>
-
 
 {% endblock %}
