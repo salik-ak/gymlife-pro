@@ -6,12 +6,15 @@ from home.models import MembershipPlan,Subscription,Payment
 import datetime
 from django.http import JsonResponse
 import json
+import qrcode
+from io import BytesIO
 from .models import PurchasedCourse
 from authentication.models import CustomUser
 from django.db.models import Q
 from .forms import UserProfileForm
 from .models import userProfile
 from .models import WorkoutPlan,WorkoutPlanExercise
+from django.core.files.base import ContentFile
 # Create your views here.
 def index(request):
     trainer= Trainer.objects.all()
@@ -124,9 +127,35 @@ def payments(request):
         amount_paid=body['price_total'],
         status=body['status']
     )
-    payment.save()
-
+    print('kooi')
     
+        # Generate QR code using the payment data
+    data = f"Order Number: {payment.order_id}\nTransaction ID: {payment.payment_id}"
+    print(data)
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    
+    qr.add_data(data)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    # Save the QR code image in BytesIO buffer
+    buffer = BytesIO()
+    img.save(buffer)
+    buffer.seek(0)
+
+    # Save the QR code image data to the Payment model
+    payment.qr_code_image = buffer.getvalue()
+    qr_code_data_url = f"data:image/png;base64,{base64.b64encode(buffer.getvalue()).decode()}"
+    print(payment.qr_code_image)
+    payment.save()
+ 
+
+
 
     # Update the subscription with the payment details
     # client.payment = payment
@@ -136,7 +165,8 @@ def payments(request):
     # Send the response back to the client
     data = {
         'order_number': payment.order_id,
-        'transID': payment.payment_id
+        'transID': payment.payment_id,
+        
     }
     print(data)
     return JsonResponse(data)

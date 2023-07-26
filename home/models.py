@@ -14,6 +14,7 @@ class Payment(models.Model):
     amount_paid = models.FloatField(default=0)
     status = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
+    qr_code_image = models.BinaryField(null=True, blank=True)
 
 
     def __str__(self):
