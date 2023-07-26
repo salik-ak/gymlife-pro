@@ -2,13 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,django
 
 ### Django ###
-*.log
-*.pot
-*.pyc
-__pycache__/
-local_settings.py
 
-db.sqlite3-journal
 
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
@@ -73,9 +67,7 @@ cover/
 
 # Django stuff:
 
-# Flask stuff:
-instance/
-.webassets-cache
+
 
 # Scrapy stuff:
 .scrapy
@@ -121,15 +113,6 @@ venv.bak/
 .spyproject
 
 # Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
 
 # Pyre type checker
 .pyre/
