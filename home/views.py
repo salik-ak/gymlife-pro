@@ -150,7 +150,7 @@ def payments(request):
 
     # Save the QR code image data to the Payment model
     payment.qr_code_image = buffer.getvalue()
-    qr_code_data_url = f"data:image/png;base64,{base64.b64encode(buffer.getvalue()).decode()}"
+    
     print(payment.qr_code_image)
     payment.save()
  
