@@ -28,6 +28,6 @@ urlpatterns = [
     path('adminpanel/', include('adminpanel.urls')),
     path('trainer/', include('trainer.urls')),
     path('course/', include('course.urls')),
-]
-urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-urlpatterns +=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# urlpatterns +=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# urlpatterns +=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
