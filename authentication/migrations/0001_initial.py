@@ -10,8 +10,6 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('auth', '0014_auto_20230621_1035'),
-        ('trainer', '0001_initial'),
     ]
 
     operations = [
